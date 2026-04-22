@@ -51,6 +51,26 @@ def get_init(monster: dict) -> int:
     dex = monster.get("dex", 10)
     return (dex - 10) // 2
 
+def _alignment_str(alignment) -> str:
+    """Robustly convert 5etools alignment (str, list of str/dict/list) to a string."""
+    if not alignment:
+        return ""
+    if isinstance(alignment, str):
+        return alignment
+    if isinstance(alignment, list):
+        parts = []
+        for a in alignment:
+            if isinstance(a, str):
+                parts.append(a)
+            elif isinstance(a, dict):
+                parts.append(a.get("special", a.get("alignment", str(a))))
+            elif isinstance(a, list):
+                parts.append(_alignment_str(a))
+            else:
+                parts.append(str(a))
+        return " ".join(parts)
+    return str(alignment)
+
 def convert(m: dict) -> dict:
     has_lair = bool(
         m.get("dragonCastingColor") or any(
@@ -69,7 +89,7 @@ def convert(m: dict) -> dict:
         "type": get_type(m),
         "tags": get_tags(m),
         "section": m.get("group", ""),
-        "alignment": " ".join(str(a) if not isinstance(a, dict) else a.get("special", a.get("alignment", str(a))) for a in m.get("alignment", [])) if isinstance(m.get("alignment"), list) else str(m.get("alignment", "")),
+        "alignment": _alignment_str(m.get("alignment", "")),
         "environment": ", ".join(m.get("environment", [])) if m.get("environment") else "",
         "ac": get_ac(m),
         "hp": get_hp(m),
