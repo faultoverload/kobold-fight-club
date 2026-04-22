@@ -63,7 +63,8 @@ def _alignment_str(alignment) -> str:
             if isinstance(a, str):
                 parts.append(a)
             elif isinstance(a, dict):
-                parts.append(a.get("special", a.get("alignment", str(a))))
+                val = a.get("special") or a.get("alignment") or ""
+                parts.append(_alignment_str(val))
             elif isinstance(a, list):
                 parts.append(_alignment_str(a))
             else:
