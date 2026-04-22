@@ -7,7 +7,7 @@ import { versionCompare } from "../js/helpers";
 export const useMonsters = defineStore("monsters", {
   state: () => {
     return {
-      version: "2.2.5",
+      version: "2.2.6",
       storedVersion: useLocalStorage("storedMonstersVersion", "2.2.5"),
 
       debugMonsters: useLocalStorage("debugMonsters", false),
