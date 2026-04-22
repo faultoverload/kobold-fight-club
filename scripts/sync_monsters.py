@@ -69,16 +69,29 @@ ADVENTURE_IDS: set[str] = {
     "DoSI", "LoX", "DSotDQ", "KftGV", "GotSF", "PaBTSO", "ToFW",
     "CoA", "DitLCoT", "LRDT", "VEoR", "QftIS", "ESK",
 }
+CR_MAP = {"1/8": "1/8", "1/4": "1/4", "1/2": "1/2"}
 
-
-def parse_cr(cr_val) -> float:
+def parse_cr(cr_val) -> str:
+    """Return CR as a string key matching CONST.CR in constants.js.
+    Valid values: "0","1/8","1/4","1/2","1","2"..."30"
+    """
     if cr_val is None:
-        return 0
+        return "0"
     if isinstance(cr_val, dict):
         cr_val = cr_val.get("cr", 0)
-    if isinstance(cr_val, (int, float)):
-        return float(cr_val)
-    return CR_MAP.get(str(cr_val), 0)
+    if isinstance(cr_val, str) and cr_val in CR_MAP:
+        return CR_MAP[cr_val]
+    try:
+        n = float(cr_val)
+        if n == 0.125:
+            return "1/8"
+        if n == 0.25:
+            return "1/4"
+        if n == 0.5:
+            return "1/2"
+        return str(int(n))
+    except (ValueError, TypeError):
+        return "0"
 
 
 def get_type(monster: dict) -> str:
