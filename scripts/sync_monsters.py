@@ -69,7 +69,7 @@ def convert(m: dict) -> dict:
         "type": get_type(m),
         "tags": get_tags(m),
         "section": m.get("group", ""),
-        "alignment": " ".join(m.get("alignment", [])) if isinstance(m.get("alignment"), list) else str(m.get("alignment", "")),
+        "alignment": " ".join(str(a) if not isinstance(a, dict) else a.get("special", a.get("alignment", str(a))) for a in m.get("alignment", [])) if isinstance(m.get("alignment"), list) else str(m.get("alignment", "")),
         "environment": ", ".join(m.get("environment", [])) if m.get("environment") else "",
         "ac": get_ac(m),
         "hp": get_hp(m),
