@@ -22,7 +22,8 @@ def parse_cr(cr_val) -> float:
 def get_type(monster: dict) -> str:
     t = monster.get("type", "")
     if isinstance(t, dict):
-        return t.get("type", "Unknown").title()
+        inner = t.get("type", "Unknown")
+        return str(inner).title() if not isinstance(inner, dict) else "Unknown"
     return str(t).title()
 
 def get_tags(monster: dict) -> str:
