@@ -148,9 +148,9 @@ def convert(m: dict, source_name_map: dict[str, str]) -> dict:
             for t in (m.get("action") or [])
         )
     )
-    sources_raw = m.get("source", "")
+    sources_abbrev = m.get("source", "")
     # Map abbreviation to full name; fall back to abbreviation if unknown
-    full_name = source_name_map.get(sources_raw, sources_raw)
+    full_name = source_name_map.get(sources_abbrev, sources_abbrev)
     page = m.get("page", "")
     sources_str = f"{full_name}: {page}" if page else full_name
 
@@ -214,22 +214,18 @@ async def fetch_all_monsters(client: httpx.AsyncClient) -> list[dict]:
     return monsters
 
 
-def build_sources_json(converted: list[dict], source_name_map: dict[str, str],
-                       abbrev_to_name: dict[str, str]) -> list[dict]:
+def build_sources_json(raw_monsters: list[dict], source_name_map: dict[str, str]) -> list[dict]:
     """Generate se_sources.json entries from the actual source abbreviations used in the monster data."""
-    seen_names: set[str] = set()
+    seen_abbrevs: set[str] = set()
     sources_out: list[dict] = []
 
-    for m in converted:
-        raw = m["sources"]
-        # Extract the book part (before ": pagenum")
-        book_name = raw.split(": ")[0].strip() if ": " in raw else raw.strip()
-        if book_name in seen_names:
+    for m in raw_monsters:
+        abbrev = m.get("source", "")
+        if not abbrev or abbrev in seen_abbrevs:
             continue
-        seen_names.add(book_name)
+        seen_abbrevs.add(abbrev)
 
-        # Find the original abbreviation for this full name (reverse lookup)
-        abbrev = next((k for k, v in abbrev_to_name.items() if v == book_name), book_name)
+        book_name = source_name_map.get(abbrev, abbrev)
 
         source_type: str
         if abbrev in SOURCE_TYPES:
@@ -280,7 +276,7 @@ async def main():
         json.dump(converted, f, indent=2)
     print(f"Wrote {len(converted)} monsters to {OUT_MONSTERS}")
 
-    sources_data = build_sources_json(converted, source_name_map, source_name_map)
+    sources_data = build_sources_json(monsters, source_name_map)
     with open(OUT_SOURCES, "w") as f:
         json.dump(sources_data, f, indent=2)
     print(f"Wrote {len(sources_data)} sources to {OUT_SOURCES}")
