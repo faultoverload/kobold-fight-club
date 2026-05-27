@@ -269,8 +269,9 @@ def _alignment_str(alignment) -> str:
                 texts.append(_alignment_str(inner))
             elif isinstance(a, list):
                 texts.append(_alignment_str(a))
-        # If all entries are single-letter codes, decode as an alignment array
-        if all(len(t) == 1 and t.isalpha() and t.isupper() for t in texts if t):
+        # If all entries look like axis codes (single letter or NX/NY), decode as an alignment array
+        _AXIS_CODES = {"L", "N", "C", "G", "E", "U", "A", "NX", "NY"}
+        if all(t in _AXIS_CODES for t in texts if t):
             return _decode_alignment_list(texts)
         # Otherwise join (e.g. multiple alignments separated by "or")
         return " or ".join(texts)
