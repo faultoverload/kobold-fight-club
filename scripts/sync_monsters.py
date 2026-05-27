@@ -99,7 +99,7 @@ def _decode_alignment_list(align_list: list) -> str:
 
     # Any alignment on L/C axis, non-good on G/E: ['L','NX','C','NY','E']
     if has_nx and has_ny and len(lc_specific) >= 2 and "E" in ge_specific:
-        return "any non-good"
+        return "non-good"
     # Any alignment on L/C axis, evil only: ['L','NX','C','E']
     if has_nx and not has_ny and len(lc_specific) >= 2 and ge_specific == {"E"}:
         return "any evil"
@@ -108,16 +108,40 @@ def _decode_alignment_list(align_list: list) -> str:
         return "any chaotic"
     # Non-lawful on L/C, any on G/E: ['NX','C','G','NY','E']
     if has_nx and has_ny and "C" in lc_specific and len(ge_specific) >= 2:
-        return "any non-lawful"
+        return "non-lawful"
+
+    # NX + NY + N only → neutral (non-lawful, non-good, and neutral = just neutral)
+    if has_nx and has_ny and not lc_specific and not ge_specific and "N" in lc_codes:
+        return "neutral"
 
     # ── Fallback: build from the two axes ──
     lc_word = None
     ge_word = None
+
+    # Extract explicit axis codes (L, C for law/chaos; G, E for good/evil)
     for code in align_list:
-        if code in _ALIGN_LC_MAP:
+        if code in ("L", "C"):
             lc_word = _ALIGN_LC_MAP[code]
-        elif code in _ALIGN_GE_MAP:
+        elif code in ("G", "E"):
             ge_word = _ALIGN_GE_MAP[code]
+
+    # Handle N: if present and both axes are empty, just return "neutral".
+    # Otherwise place N on whichever axis is still missing a word.
+    has_n = "N" in lc_codes or "N" in ge_codes
+    if has_n:
+        if lc_word is None and ge_word is None:
+            return "neutral"
+        elif lc_word is None:
+            lc_word = "neutral"
+        elif ge_word is None:
+            ge_word = "neutral"
+        # If both filled, N is redundant — ignore
+
+    # Handle NX (non-lawful) and NY (non-good) — only if no explicit axis word yet
+    if has_nx and lc_word is None:
+        lc_word = "non-lawful"
+    if has_ny and ge_word is None:
+        ge_word = "non-good"
 
     if lc_word and ge_word:
         return f"{lc_word} {ge_word}"
@@ -273,8 +297,8 @@ def _alignment_str(alignment) -> str:
         _AXIS_CODES = {"L", "N", "C", "G", "E", "U", "A", "NX", "NY"}
         if all(t in _AXIS_CODES for t in texts if t):
             return _decode_alignment_list(texts)
-        # Otherwise join (e.g. multiple alignments separated by "or")
-        return " or ".join(texts)
+        # Otherwise join (e.g. multiple alignments separated by "or"), deduplicating
+        return " or ".join(dict.fromkeys(texts))
     if isinstance(alignment, dict):
         return str(alignment.get("special") or alignment.get("alignment") or "")
     return str(alignment)
