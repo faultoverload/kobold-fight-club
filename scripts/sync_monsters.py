@@ -16,7 +16,129 @@ BASE_URL = "https://5e.gateslab.win"
 OUT_MONSTERS = Path(__file__).parent.parent / "public" / "json" / "se_monsters.json"
 OUT_SOURCES = Path(__file__).parent.parent / "public" / "json" / "se_sources.json"
 
-CR_MAP = {"1/8": 0.125, "1/4": 0.25, "1/2": 0.5}
+CR_MAP = {"1/8": "1/8", "1/4": "1/4", "1/2": "1/2"}
+
+# ── Size mapping: 5etools abbreviations → kobold lowercase full text ──
+SIZE_MAP: dict[str, str] = {
+    "T": "tiny",
+    "S": "small",
+    "M": "medium",
+    "L": "large",
+    "H": "huge",
+    "G": "gargantuan",
+}
+
+# ── Alignment mapping: 5etools axis codes → full words ──
+_ALIGN_LC_MAP: dict[str, str] = {"L": "lawful", "N": "neutral", "C": "chaotic"}
+_ALIGN_GE_MAP: dict[str, str] = {"G": "good", "N": "neutral", "E": "evil"}
+
+# ── Pre-computed map for common 2-letter alignment arrays ──
+_ALIGN_TWO_LETTER: dict[tuple, str] = {
+    ("L", "G"): "lawful good",
+    ("N", "G"): "neutral good",
+    ("C", "G"): "chaotic good",
+    ("L", "N"): "lawful neutral",
+    ("C", "N"): "chaotic neutral",
+    ("L", "E"): "lawful evil",
+    ("N", "E"): "neutral evil",
+    ("C", "E"): "chaotic evil",
+}
+
+
+def _decode_alignment_list(align_list: list) -> str:
+    """Decode a 5etools alignment array like ['C','E'] → \"chaotic evil\"."""
+    # ── Pure single-code edge cases: U, A, N alone ──
+    if len(align_list) == 1:
+        solo = align_list[0]
+        if solo == "U":
+            return "unaligned"
+        if solo == "A":
+            return "any"
+        if solo == "N":
+            return "neutral"
+
+    lc_codes: set[str] = set()
+    ge_codes: set[str] = set()
+
+    for code in align_list:
+        if not isinstance(code, str):
+            continue
+        if code in ("L", "N", "C", "NX"):
+            lc_codes.add(code)
+        if code in ("G", "N", "E", "NY"):
+            ge_codes.add(code)
+
+    # ── No recognized codes at all ──
+    if not lc_codes and not ge_codes:
+        return " ".join(str(c) for c in align_list)  # fallback
+
+    # Single L/C code without G/E partner
+    if len(align_list) == 1:
+        solo = align_list[0]
+        if solo in _ALIGN_LC_MAP:
+            return _ALIGN_LC_MAP[solo]
+        if solo in _ALIGN_GE_MAP:
+            return _ALIGN_GE_MAP[solo]
+
+    # ── Two-letter combos (fast path) ──
+    if len(align_list) == 2:
+        key = (align_list[0], align_list[1])
+        if key in _ALIGN_TWO_LETTER:
+            return _ALIGN_TWO_LETTER[key]
+
+    # ── "N" can appear on both axes — disambiguate ──
+    # If N appears alongside an L/C code, it's on the G/E axis (neutral good/evil).
+    # If N appears alongside a G/E code, it's on the L/C axis (lawful/chaotic neutral).
+    # If N appears alone → "neutral" (handled above).
+
+    # ── Complex patterns with NX/NY ──
+    has_nx = "NX" in lc_codes
+    has_ny = "NY" in ge_codes
+    lc_specific = lc_codes - {"NX", "N"}
+    ge_specific = ge_codes - {"NY", "N"}
+
+    # Any alignment on L/C axis, non-good on G/E: ['L','NX','C','NY','E']
+    if has_nx and has_ny and len(lc_specific) >= 2 and "E" in ge_specific:
+        return "any non-good"
+    # Any alignment on L/C axis, evil only: ['L','NX','C','E']
+    if has_nx and not has_ny and len(lc_specific) >= 2 and ge_specific == {"E"}:
+        return "any evil"
+    # Any chaotic alone on L/C, non-lawful on G/E: ['C','G','NY','E']
+    if not has_nx and has_ny and lc_specific == {"C"} and len(ge_specific) >= 2:
+        return "any chaotic"
+    # Non-lawful on L/C, any on G/E: ['NX','C','G','NY','E']
+    if has_nx and has_ny and "C" in lc_specific and len(ge_specific) >= 2:
+        return "any non-lawful"
+
+    # ── Fallback: build from the two axes ──
+    lc_word = None
+    ge_word = None
+    for code in align_list:
+        if code in _ALIGN_LC_MAP:
+            lc_word = _ALIGN_LC_MAP[code]
+        elif code in _ALIGN_GE_MAP:
+            ge_word = _ALIGN_GE_MAP[code]
+
+    if lc_word and ge_word:
+        return f"{lc_word} {ge_word}"
+    if lc_word:
+        return lc_word
+    if ge_word:
+        return ge_word
+    return " ".join(str(c) for c in align_list)
+
+
+def _decode_size(size_val) -> str:
+    """Decode a 5etools size value (usually a list like ['M']) → \"medium\"."""
+    if isinstance(size_val, list) and size_val:
+        first = size_val[0]
+        if isinstance(first, str) and first in SIZE_MAP:
+            return SIZE_MAP[first]
+        return str(first)
+    if isinstance(size_val, str):
+        return SIZE_MAP.get(size_val, size_val)
+    return str(size_val) if size_val else "medium"
+
 
 # Fallback mappings for sources not in books.json / adventures.json
 EXTRA_SOURCE_NAMES: dict[str, str] = {
@@ -69,8 +191,6 @@ ADVENTURE_IDS: set[str] = {
     "DoSI", "LoX", "DSotDQ", "KftGV", "GotSF", "PaBTSO", "ToFW",
     "CoA", "DitLCoT", "LRDT", "VEoR", "QftIS", "ESK",
 }
-CR_MAP = {"1/8": "1/8", "1/4": "1/4", "1/2": "1/2"}
-
 def parse_cr(cr_val) -> str:
     """Return CR as a string key matching CONST.CR in constants.js.
     Valid values: "0","1/8","1/4","1/2","1","2"..."30"
@@ -133,24 +253,29 @@ def get_init(monster: dict) -> int:
 
 
 def _alignment_str(alignment) -> str:
-    """Robustly convert 5etools alignment (str, list of str/dict/list) to a string."""
+    """Robustly convert 5etools alignment to a kobold-compatible string."""
     if not alignment:
         return ""
     if isinstance(alignment, str):
         return alignment
     if isinstance(alignment, list):
-        parts = []
+        # Collect all texts first (handles dicts with chance inside lists)
+        texts: list[str] = []
         for a in alignment:
             if isinstance(a, str):
-                parts.append(a)
+                texts.append(a)
             elif isinstance(a, dict):
-                val = a.get("special") or a.get("alignment") or ""
-                parts.append(_alignment_str(val))
+                inner = a.get("alignment") or a.get("special") or ""
+                texts.append(_alignment_str(inner))
             elif isinstance(a, list):
-                parts.append(_alignment_str(a))
-            else:
-                parts.append(str(a))
-        return " ".join(parts)
+                texts.append(_alignment_str(a))
+        # If all entries are single-letter codes, decode as an alignment array
+        if all(len(t) == 1 and t.isalpha() and t.isupper() for t in texts if t):
+            return _decode_alignment_list(texts)
+        # Otherwise join (e.g. multiple alignments separated by "or")
+        return " or ".join(texts)
+    if isinstance(alignment, dict):
+        return str(alignment.get("special") or alignment.get("alignment") or "")
     return str(alignment)
 
 
@@ -170,7 +295,7 @@ def convert(m: dict, source_name_map: dict[str, str]) -> dict:
     return {
         "name": m.get("name", "Unknown"),
         "cr": parse_cr(m.get("cr")),
-        "size": (m.get("size") or ["M"])[0] if isinstance(m.get("size"), list) else m.get("size", "M"),
+        "size": _decode_size(m.get("size")),
         "type": get_type(m),
         "tags": get_tags(m),
         "section": m.get("group", ""),
