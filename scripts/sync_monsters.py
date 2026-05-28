@@ -422,6 +422,53 @@ def build_sources_json(raw_monsters: list[dict], source_name_map: dict[str, str]
     return sources_out
 
 
+def resolve_copy(monster: dict, lookup: dict[tuple, dict], depth: int = 0) -> dict:
+    """Resolve 5etools _copy references, inheriting fields from base monsters.
+
+    The _copy system lets a monster declare ``_copy: {name, source}`` to
+    inherit all fields from a base monster.  Explicit fields on the copying
+    monster **override** inherited fields.  ``_mod`` and ``_templates`` are
+    skipped because they only affect text blocks, not the key stat fields.
+    """
+    MAX_DEPTH = 5
+
+    copy_info = monster.get("_copy")
+    if not copy_info:
+        return monster
+
+    if depth > MAX_DEPTH:
+        result = dict(monster)
+        result.pop("_copy", None)
+        return result
+
+    base_name = copy_info.get("name", "")
+    base_source = copy_info.get("source", "")
+    lookup_key = (base_name.lower(), base_source)
+    base = lookup.get(lookup_key)
+
+    if base is None:
+        result = dict(monster)
+        result.pop("_copy", None)
+        return result
+
+    # Recursively resolve the base (handles chained _copy references)
+    resolved_base = resolve_copy(base, lookup, depth + 1)
+
+    # Start with all fields from the resolved base
+    result = dict(resolved_base)
+
+    # Overlay explicit fields from the copying monster (these take precedence)
+    _SKIP_KEYS = {"_copy", "_templates", "_mod"}
+    for key, value in monster.items():
+        if key not in _SKIP_KEYS:
+            result[key] = value
+
+    # Clean up
+    result.pop("_copy", None)
+
+    return result
+
+
 async def main():
     async with httpx.AsyncClient(verify=False) as client:
         print("Fetching source name map from 5etools...")
@@ -430,9 +477,20 @@ async def main():
 
         print("Fetching monsters from 5etools...")
         monsters = await fetch_all_monsters(client)
-        print(f"Fetched {len(monsters)} monsters, converting...")
+        print(f"Fetched {len(monsters)} monsters")
 
-    converted = [convert(m, source_name_map) for m in monsters]
+        # Build lookup dict for _copy resolution: (name.lower(), source) -> raw monster
+        lookup: dict[tuple, dict] = {}
+        for m in monsters:
+            key = (m.get("name", "").lower(), m.get("source", ""))
+            lookup[key] = m
+
+        copy_count = sum(1 for m in monsters if m.get("_copy"))
+        print(f"Resolving _copy references ({copy_count} monsters)...")
+        resolved = [resolve_copy(m, lookup) for m in monsters]
+        print(f"  Resolved successfully")
+
+    converted = [convert(m, source_name_map) for m in resolved]
 
     OUT_MONSTERS.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_MONSTERS, "w") as f:

@@ -1,140 +1,490 @@
 [
   {
     "type": "Official",
-    "name": "Systems Reference Document (SRD)",
-    "shortname": "SRD",
-    "link": "https://media.wizards.com/2016/downloads/DND/SRD-OGL_V5.1.pdf",
+    "name": "Acquisitions Incorporated",
+    "shortname": "AI"
+  },
+  {
+    "type": "Official",
+    "name": "Adventure Atlas: The Mortuary",
+    "shortname": "AATM"
+  },
+  {
+    "type": "Official",
+    "name": "Adventure with Muk",
+    "shortname": "AWM"
+  },
+  {
+    "type": "Official",
+    "name": "Bigby Presents: Glory of the Giants",
+    "shortname": "BGG",
     "default": true
+  },
+  {
+    "type": "Official",
+    "name": "Boo's Astral Menagerie",
+    "shortname": "BAM",
+    "default": true
+  },
+  {
+    "type": "Official",
+    "name": "Domains of Delight",
+    "shortname": "DoD"
+  },
+  {
+    "type": "Official",
+    "name": "Dungeon Master's Guide",
+    "shortname": "DMG"
+  },
+  {
+    "type": "Official",
+    "name": "Eberron: Rising from the Last War",
+    "shortname": "ERLW"
+  },
+  {
+    "type": "Official",
+    "name": "Explorer's Guide to Wildemount",
+    "shortname": "EGW"
+  },
+  {
+    "type": "Official",
+    "name": "Fizban's Treasury of Dragons",
+    "shortname": "FTD",
+    "default": true
+  },
+  {
+    "type": "Official",
+    "name": "Guildmasters' Guide to Ravnica",
+    "shortname": "GGR"
+  },
+  {
+    "type": "Official",
+    "name": "Minsc and Boo's Journal of Villainy",
+    "shortname": "MaBJoV"
+  },
+  {
+    "type": "Official",
+    "name": "Misplaced Monsters Volume 1",
+    "shortname": "MisMV1"
   },
   {
     "type": "Official",
     "name": "Monster Manual",
     "shortname": "MM",
-    "link": "https://www.dndbeyond.com/sources/mm",
     "default": true
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Curse of Strahd",
-    "shortname": "CoS",
-    "link": "https://www.dndbeyond.com/sources/cos/appendix-d-monsters-and-npcs"
   },
   {
     "type": "Official",
-    "name": "Basic Rules v1",
-    "shortname": "Basic",
-    "link": "https://media.wizards.com/2014/downloads/dnd/DMDnDBasicRules_v0.1.pdf",
+    "name": "Monstrous Compendium Volume 1: Spelljammer Creatures",
+    "shortname": "MCV1SC"
+  },
+  {
+    "type": "Official",
+    "name": "Monstrous Compendium Volume 2: Dragonlance Creatures",
+    "shortname": "MCV2DC"
+  },
+  {
+    "type": "Official",
+    "name": "Monstrous Compendium Volume 3: Minecraft Creatures",
+    "shortname": "MCV3MC"
+  },
+  {
+    "type": "Official",
+    "name": "Monstrous Compendium Volume 4: Eldraine Creatures",
+    "shortname": "MCV4EC"
+  },
+  {
+    "type": "Official",
+    "name": "Mordenkainen Presents: Monsters of the Multiverse",
+    "shortname": "MPMM",
     "default": true
   },
   {
-    "type": "Official Adventure",
-    "name": "Hoard of the Dragon Queen",
-    "shortname": "HotDQ",
-    "link": "https://www.dndbeyond.com/sources/hotdq/appendix-d-monsters"
-  },
-  {
-    "type": "Official Web Supplement",
-    "name": "HotDQ supplement",
-    "shortname": "HotDQ Sup",
-    "link": "https://media.wizards.com/2014/downloads/dnd/HoardDragonQueen_Supplement1.pdf"
+    "type": "Official",
+    "name": "Mordenkainen's Fiends of the Forgotten Realms",
+    "shortname": "MFF"
   },
   {
     "type": "Official",
     "name": "Mordenkainen's Tome of Foes",
-    "shortname": "MToF",
-    "link": "https://www.dndbeyond.com/sources/mtof",
+    "shortname": "MTF",
     "default": true
   },
   {
-    "type": "Official Adventure",
-    "name": "Out of the Abyss",
-    "shortname": "OotA",
-    "link": "https://www.dndbeyond.com/sources/oota"
+    "type": "Official",
+    "name": "Morte's Planar Parade",
+    "shortname": "MPP",
+    "default": true
+  },
+  {
+    "type": "Official",
+    "name": "Muk's Guide to Everything He Learned From Tasha",
+    "shortname": "MGELFT"
+  },
+  {
+    "type": "Official",
+    "name": "Mythic Odysseys of Theros",
+    "shortname": "MOT",
+    "default": true
   },
   {
     "type": "Official",
     "name": "Player's Handbook",
     "shortname": "PHB",
-    "link": "https://www.dndbeyond.com/sources/phb",
     "default": true
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Princes of the Apocalypse",
-    "shortname": "PotA",
-    "link": "https://www.dndbeyond.com/sources/pota"
-  },
-  {
-    "type": "Official Web Supplement",
-    "name": "Princes of the Apocalypse Online Supplement v1.0",
-    "shortname": "PotA Supp",
-    "link": "https://media.wizards.com/2015/downloads/dnd/PrincesApocalypse_AdvSupplementv1.0_PrinterFriendly.pdf"
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Rise of Tiamat",
-    "shortname": "RoT",
-    "link": "https://www.dndbeyond.com/sources/rot"
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Storm King's Thunder",
-    "shortname": "SKT",
-    "link": "https://www.dndbeyond.com/sources/skt"
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Tales from the Yawning Portal",
-    "shortname": "TftYP",
-    "link": "https://www.dndbeyond.com/sources/tftyp"
-  },
-  {
-    "type": "Official Web Supplement",
-    "name": "The Tortle Package",
-    "shortname": "Tortle",
-    "link": "https://www.dndbeyond.com/sources/ttp/the-tortle-package#NewMonsters"
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Tomb of Annihilation",
-    "shortname": "ToA",
-    "link": "https://www.dndbeyond.com/sources/toa"
   },
   {
     "type": "Official",
-    "name": "Volo's Guide to Monsters",
-    "shortname": "VGtM",
-    "link": "https://www.dndbeyond.com/sources/vgtm",
+    "name": "Sapphire Anniversary Dice Set",
+    "shortname": "SADS"
+  },
+  {
+    "type": "Official",
+    "name": "Strixhaven: A Curriculum of Chaos",
+    "shortname": "SCC"
+  },
+  {
+    "type": "Official",
+    "name": "Tasha's Cauldron of Everything",
+    "shortname": "TCE",
     "default": true
   },
   {
-    "type": "Official Adventure",
-    "name": "Eberron Rising From the Last War",
-    "shortname": "Eberron",
-    "link": "https://www.dndbeyond.com/sources/erftlw"
+    "type": "Official",
+    "name": "The Book of Many Things",
+    "shortname": "BMT"
   },
   {
-    "type": "Official Adventure",
-    "name": "Mythic Odysseys of Theros",
-    "shortname": "MOoT",
-    "link": "https://www.dndbeyond.com/sources/moot"
+    "type": "Official",
+    "name": "Thieves' Gallery",
+    "shortname": "HAT-TG"
   },
   {
     "type": "Official",
     "name": "Van Richten's Guide to Ravenloft",
-    "shortname": "VRGtR",
-    "link": "https://www.dndbeyond.com/sources/vrgtr"
-  },
-  {
-    "type": "Official Adventure",
-    "name": "Rime of the Frostmaiden",
-    "shortname": "RotFM",
-    "link": "https://www.dndbeyond.com/sources/idrotf"
+    "shortname": "VRGR",
+    "default": true
   },
   {
     "type": "Official",
-    "name": "Mordekainen Presents: Monsters of the Multiverse",
-    "shortname": "MPMM",
-    "link": "https://www.dndbeyond.com/sources/motm"
+    "name": "Vecna Dossier",
+    "shortname": "VD"
+  },
+  {
+    "type": "Official",
+    "name": "Volo's Guide to Monsters",
+    "shortname": "VGM",
+    "default": true
+  },
+  {
+    "type": "Official",
+    "name": "Xanathar's Guide to Everything",
+    "shortname": "XGE",
+    "default": true
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Adventures in the Forgotten Realms: Deepest Night",
+    "shortname": "AitFR-DN"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Adventures in the Forgotten Realms: From Cyan Depths",
+    "shortname": "AitFR-FCD"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Adventures in the Forgotten Realms: In Scarlet Flames",
+    "shortname": "AitFR-ISF"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Adventures in the Forgotten Realms: The Hidden Page",
+    "shortname": "AitFR-THP"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Baldur's Gate: Descent Into Avernus",
+    "shortname": "BGDIA"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Candlekeep Mysteries",
+    "shortname": "CM"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Chains of Asmodeus",
+    "shortname": "CoA"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Critical Role: Call of the Netherdeep",
+    "shortname": "CRCotN"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Curse of Strahd",
+    "shortname": "CoS"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Descent into the Lost Caverns of Tsojcanth",
+    "shortname": "DitLCoT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Dragonlance: Shadow of the Dragon Queen",
+    "shortname": "DSotDQ"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Dragons of Stormwreck Isle",
+    "shortname": "DoSI"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Essentials Kit",
+    "shortname": "ESK"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Essentials Kit: Divine Contention",
+    "shortname": "DC"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Essentials Kit: Dragon of Icespire Peak",
+    "shortname": "DIP"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Essentials Kit: Sleeping Dragon's Wake",
+    "shortname": "SDW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Essentials Kit: Storm Lord's Wrath",
+    "shortname": "SLW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Ghosts of Saltmarsh",
+    "shortname": "GoS"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Giants of the Star Forge",
+    "shortname": "GotSF"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Hoard of the Dragon Queen",
+    "shortname": "HotDQ"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Hunt for the Thessalhydra",
+    "shortname": "HftT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Icewind Dale: Rime of the Frostmaiden",
+    "shortname": "IDRotF"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Infernal Machine Rebuild",
+    "shortname": "IMR"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Journeys through the Radiant Citadel",
+    "shortname": "JttRC"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Keys from the Golden Vault",
+    "shortname": "KftGV"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Krenko's Way",
+    "shortname": "KKW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Light of Xaryxis",
+    "shortname": "LoX"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Locathah Rising",
+    "shortname": "LR"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Lost Laboratory of Kwalish",
+    "shortname": "LLK"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Lost Mine of Phandelver",
+    "shortname": "LMoP"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: A Sticky Situation",
+    "shortname": "NRH-ASS"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: A Voice in the Wilderness",
+    "shortname": "NRH-AVitW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: A Web of Lies",
+    "shortname": "NRH-AWoL"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: Adventure Together",
+    "shortname": "NRH-AT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: Circus of Illusion",
+    "shortname": "NRH-CoI"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "NERDS Restoring Harmony: The Candy Mountain Caper",
+    "shortname": "NRH-TCMC"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Out of the Abyss",
+    "shortname": "OotA"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Phandelver and Below: The Shattered Obelisk",
+    "shortname": "PaBTSO"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Princes of the Apocalypse",
+    "shortname": "PotA"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Quests from the Infinite Staircase",
+    "shortname": "QftIS"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Ravenloft: The House of Lament",
+    "shortname": "HoL"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Red Dragon's Tale: A LEGO Adventure",
+    "shortname": "LRDT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Return to the Glory",
+    "shortname": "RtG"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Rise of Tiamat",
+    "shortname": "RoT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Storm King's Thunder",
+    "shortname": "SKT"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Tales from the Yawning Portal",
+    "shortname": "TftYP"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "The Lost Dungeon of Rickedness: Big Rick Energy",
+    "shortname": "RMBRE"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "The Orrery of the Wanderer",
+    "shortname": "OoW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "The Tortle Package",
+    "shortname": "TTP"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "The Wild Beyond the Witchlight",
+    "shortname": "WBtW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Tomb of Annihilation",
+    "shortname": "ToA"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Turn of Fortune's Wheel",
+    "shortname": "ToFW"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Vecna: Eve of Ruin",
+    "shortname": "VEoR"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Waterdeep: Dragon Heist",
+    "shortname": "WDH"
+  },
+  {
+    "type": "Official Adventure",
+    "name": "Waterdeep: Dungeon of the Mad Mage",
+    "shortname": "WDMM"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Amonkhet",
+    "shortname": "PSA"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Dominaria",
+    "shortname": "PSD"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Innistrad",
+    "shortname": "PSI"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Ixalan",
+    "shortname": "PSX"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Kaladesh",
+    "shortname": "PSK"
+  },
+  {
+    "type": "Official Web Supplement",
+    "name": "Plane Shift: Zendikar",
+    "shortname": "PSZ"
   }
 ]
