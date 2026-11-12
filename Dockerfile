@@ -4,6 +4,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+# Source of the 5etools monster data. Defaults to the public Traefik route;
+# override with --build-arg FIVETOOLS_BASE_URL=<url> to fetch over the docker
+# network instead (e.g. http://127.0.0.1:8085) and avoid the Traefik rate limit.
+ARG FIVETOOLS_BASE_URL="https://5e.gateslab.win"
+ENV FIVETOOLS_BASE_URL=${FIVETOOLS_BASE_URL}
 # Fetch and inject 5etools monsters before building
 RUN apt-get update && apt-get install -y python3 python3-pip --no-install-recommends \
     && pip3 install httpx --break-system-packages \
