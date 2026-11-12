@@ -10,9 +10,10 @@ This script:
 import httpx
 import asyncio
 import json
+import os
 from pathlib import Path
 
-BASE_URL = "https://5e.gateslab.win"
+BASE_URL = os.environ.get("FIVETOOLS_BASE_URL", "https://5e.gateslab.win")
 OUT_MONSTERS = Path(__file__).parent.parent / "public" / "json" / "se_monsters.json"
 OUT_SOURCES = Path(__file__).parent.parent / "public" / "json" / "se_sources.json"
 
@@ -364,14 +365,40 @@ async def fetch_source_name_map(client: httpx.AsyncClient) -> dict[str, str]:
     return name_map
 
 
+def _raise_for_status(response, url: str | None = None) -> None:
+    """Raise a clear, actionable error for any non-200 response.
+
+    Surfaces the URL and status code so a rate-limited or unreachable
+    5etools backend is immediately identifiable instead of failing later
+    with an opaque JSON decode error.
+    """
+    if response.status_code == 200:
+        return
+    target = url or str(response.url)
+    body = (response.text or "").strip()
+    detail = f": {body[:200]}" if body else ""
+    raise RuntimeError(
+        f"5etools request failed: {target} returned HTTP "
+        f"{response.status_code} {response.reason_phrase}{detail}"
+    )
+
+
 async def fetch_all_monsters(client: httpx.AsyncClient) -> list[dict]:
-    index = (await client.get(f"{BASE_URL}/data/bestiary/index.json", timeout=30)).json()
-    tasks = [client.get(f"{BASE_URL}/data/bestiary/{fname}", timeout=30) for fname in index.values()]
+    index_resp = await client.get(f"{BASE_URL}/data/bestiary/index.json", timeout=30)
+    _raise_for_status(index_resp)
+    index = index_resp.json()
+    tasks = [
+        client.get(f"{BASE_URL}/data/bestiary/{fname}", timeout=30)
+        for fname in index.values()
+    ]
     responses = await asyncio.gather(*tasks, return_exceptions=True)
     monsters = []
-    for r in responses:
+    for fname, r in zip(index.values(), responses):
         if isinstance(r, Exception):
-            continue
+            raise RuntimeError(
+                f"Failed to fetch {BASE_URL}/data/bestiary/{fname}: {r!r}"
+            ) from r
+        _raise_for_status(r, url=f"{BASE_URL}/data/bestiary/{fname}")
         data = r.json()
         monsters.extend(data.get("monster", []))
     return monsters
